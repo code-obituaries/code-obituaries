@@ -1,8 +1,8 @@
 {
 	"head":{
-		"description": "Basic jamstack site",
-		"keywords": "python, jamstack",
-		"author": "R Ja",
+		"description": "Remembering coders (obituaries) who contributed to make OpenSource awesome",
+		"keywords": "opensource, obituries",
+		"author": "",
 		"theme-color": "#ffb74d"
 	}
 }

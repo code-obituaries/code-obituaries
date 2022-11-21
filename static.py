@@ -59,7 +59,8 @@ def generate_profiles():
             'coder_info': file_data['meta']['info'][0],
             'coder_died': file_data['meta']['died'][0],
             'coder_text': file_data['html'],
-            'page_title': file_data['meta']['name'][0]
+            'coder_slug': file_data['slug'],
+            'page_title': file_data['meta']['name'][0],
             })
         profile_slug_path = os.path.join(settings.PROFILE_FOLDER, file_data['slug'])
         

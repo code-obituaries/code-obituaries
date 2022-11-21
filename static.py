@@ -1,7 +1,7 @@
-# https://github.com/pymug/website-AV19-AV20
-
+import os
 import sys
 from os.path import join
+import markdown
 
 import settings
 from flask import Flask
@@ -13,11 +13,71 @@ context.update({
     "info": settings.info
 })
 
+def md_data(text: str):
+    '''
+    text:
+        file source
+    '''
+    md = markdown.Markdown(extensions=["extra", "smarty", "meta"])
+    html = md.convert(text)
+    metadata = md.Meta
+    return {
+        'html': html,
+        'meta': metadata
+    }
+
+
+def fetch_profiles():
+    profiles = []
+    
+    # loop trough folders
+    #   read then get source file
+    for file in os.listdir(settings.DATA_FOLDER):
+        file_path = os.path.join(settings.DATA_FOLDER, file)
+        with open(file_path) as f:
+            file_data = md_data(f.read())
+            file_data.update({'slug': file[:-3]})
+            profiles.append(file_data)
+
+    return profiles
+
+coder_profiles = fetch_profiles()
+
+
+
+
+
+def generate_profiles():
+    # create /profile/
+    if not os.path.exists(settings.PROFILE_FOLDER):
+        os.mkdir(settings.PROFILE_FOLDER)
+
+    for file_data in coder_profiles:
+        context.update({
+            'path': '../../',
+            'coder_name': file_data['meta']['name'][0],
+            'coder_info': file_data['meta']['info'][0],
+            'coder_died': file_data['meta']['died'][0],
+            'coder_text': file_data['html'],
+            'page_title': file_data['meta']['name'][0]
+            })
+        profile_slug_path = os.path.join(settings.PROFILE_FOLDER, file_data['slug'])
+        
+        try:
+            os.mkdir(profile_slug_path)
+        except:
+            pass
+        generate('sections/profile.html', join(profile_slug_path, 'index.html'), **context)
+
 
 def main(args):
     def gen():
+        context.update({'path': './', 'coder_profiles': coder_profiles, 'page_title': 'OpenSource obituaries'})
+
         generate('index.html', join(
             settings.OUTPUT_FOLDER, 'index.html'), **context)
+
+        generate_profiles()
 
     if len(args) > 1 and args[1] == '--server':
         app = Flask(__name__)

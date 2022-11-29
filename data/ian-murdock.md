@@ -8,15 +8,7 @@ Founded the [Debian](https://www.debian.org/) project.
 **Testimonials**
 
 
-> Sample testimonial of people who worked with him
-
--- [Name](https://sample-profile.link)  
-
-> Sample testimonial of people who worked with him
-
--- [Name](https://sample-profile.link)  
-
-> Sample testimonial of people who worked with him
+> Sample testimonial
 
 -- [Name](https://sample-profile.link)  
 
